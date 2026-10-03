@@ -3,6 +3,11 @@ const caracter = document.querySelector('.car');
 const wold = document.querySelector('.world');
 const computerScreen = document.querySelector('.screen')
 const cptr_bg = document.querySelector('.screen_bg')
+const winCntt = document.querySelector('.WinContent')
+const skills = document.querySelector('.skills');
+const Wintitle = document.querySelector('.title')
+const proLink = document.querySelector('#proLink');
+
 
 const projects = [
   {
@@ -60,12 +65,30 @@ window.addEventListener('keydown', function (event) {
     m = Math.min(m + 10, wold.offsetWidth - caracter.offsetWidth);   // CHANGED: one line, same effect
   }else if (event.key === 'Enter' && content) {
     cptr_bg.style.display = 'flex'
-    computerScreen.innerText = content.discreption
+    //title
+    Wintitle.innerText = `${content.name}.exe  (${content.type})`
+    // disciprioon
+    winCntt.innerText = content.discreption
+
+    skills.replaceChildren(); 
+    content.techs.forEach(t => {
+
+      const li = document.createElement('li');
+      li.innerText = t;
+      skills.appendChild(li)
+    });
+
+    // link 
+    proLink.href = content.link
+
+  }
+  if (content === null){
+    cptr_bg.style.display = 'none'
+    skills.replaceChildren();
+
   }
 
-  if(content === null ){
-    cptr_bg.style.display = 'none'
-  }
+
 
   caracter.style.left = `${m}px`;
 
