@@ -8,7 +8,30 @@ const skills = document.querySelector('.skills');
 const Wintitle = document.querySelector('.title')
 const proLink = document.querySelector('#proLink');
 const sprite = document.querySelector('.sprite');
-const carDial = document.querySelector('.carDial') 
+const carDial = document.querySelector('.carDial')
+const contentBlock = document.querySelector('.contactHouse')
+const closeScreen = document.querySelector('#CloseBtn');
+const Clicker = document.querySelector("#Clicker");
+const Goright = document.querySelector('#Goright') 
+const Goleft = document.querySelector('#Goleft')
+
+closeScreen.addEventListener('click',function(){
+  cptr_bg.style.display = 'none'
+});
+
+// I am tiered , so to tommorow me , you better fix this lazzy approche to move the caracter without the keybord touches
+
+Clicker.addEventListener('click', function(){
+   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+})
+
+Goright.addEventListener('click', function(){
+   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+})
+
+Goleft.addEventListener('click', function(){
+   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+})
 
 const projects = [
   {
@@ -74,7 +97,8 @@ const projects = [
     link: 'https://github.com/BrahimiRayan/Devis-TrMadel',
     techs: ['JavaScript', 'HTML', 'CSS'],
     type: 'Logiciel'
-  }
+  },
+
 ];
 const SPEED = 20
 
@@ -90,9 +114,9 @@ projects.forEach((p, index) => {
   wold.appendChild(container);
 });
 
-const markers = document.querySelectorAll('.marker');   // CHANGED: moved up, after the markers exist
-let content = null;                                     // CHANGED: replaces isNear + old content
-
+const markers = document.querySelectorAll('.marker');
+let content = null;
+let contact = false; 
 let Screenwidth = window.innerWidth;
 window.addEventListener('resize', function () {
   Screenwidth = window.innerWidth;
@@ -101,22 +125,34 @@ window.addEventListener('resize', function () {
 let m = 0;
 
 window.addEventListener('keydown', function (event) {
+
   if (event.key === 'ArrowLeft') {
     m = Math.max(0, m - SPEED);
-     sprite.classList.add('walking');
+    sprite.classList.add('walking');
     sprite.style.transform = 'scaleX(-1)';
   } else if (event.key === 'ArrowRight') {
-    m = Math.min(m + SPEED, wold.offsetWidth - caracter.offsetWidth);   // CHANGED: one line, same effect
+    // m = Math.min(m + SPEED, wold.offsetWidth - caracter.offsetWidth);
+    m = Math.min(m + SPEED, wold.offsetWidth - sprite.offsetWidth); 
     sprite.classList.add('walking');
     sprite.style.transform = 'scaleX(1)';
-  }else if (event.key === 'Enter' && content) {
+  }
+
+  caracter.style.left = `${m}px`;                    
+
+  const maxOffset = Math.max(0, wold.offsetWidth - Screenwidth);           
+  const offset = Math.min(maxOffset, Math.max(0, m - Screenwidth / 2));      
+  wold.style.transform = `translateX(${-offset}px)`;                           
+
+  checkNear(); 
+
+  if (event.key === 'Enter' && content) {
     cptr_bg.style.display = 'flex'
-    //title
+
     Wintitle.innerText = `${content.name}.exe  (${content.type})`
-    // disciprioon
+
     winCntt.innerText = content.discreption
 
-    skills.replaceChildren(); 
+    skills.replaceChildren();
     content.techs.forEach(t => {
 
       const li = document.createElement('li');
@@ -124,25 +160,36 @@ window.addEventListener('keydown', function (event) {
       skills.appendChild(li)
     });
 
-    // link 
+    proLink.style.display = '';                      
     proLink.href = content.link
 
+  } else if (event.key === 'Enter' && contact) {
+    cptr_bg.style.display = 'flex'
+
+    Wintitle.innerText = `Contacts.exe`
+// For tommorow me u need to fix this and replace it with an actuelle code , I AM WORNING YOU!
+winCntt.innerHTML = `
+  Développeur passionné par le <b>web</b> et les <b>systèmes</b>.
+  Titulaire d'une double licence : <b>Systèmes d'Information</b> (Université de Béjaïa) et <b>Informatique Générale</b> (ISIMA).
+  Actuellement en <b>Master 1 Informatique</b> à l'ISIMA, Clermont Auvergne.
+  <br><br>
+  Je cherche un <b>stage</b>, puis une <b>alternance à partir de septembre 2027</b>.
+  <br><br>
+  <b>Prêt à donner vie à votre prochain projet.</b>
+  <br><br>
+  GitHub : <a href="https://github.com/BrahimiRayan/" target="_blank" rel="noopener">BrahimiRayan</a><br>
+  Email : <a href="mailto:brahimirayan06@gmail.com">brahimirayan06@gmail.com</a><br>
+  LinkedIn : <a href="https://www.linkedin.com/in/brahimi-rayan-018880317/" target="_blank" rel="noopener">brahimi-rayan</a><br>
+  Téléphone : <a href="tel:+33744157219">+33 7 44 15 72 19</a>
+`;
+    skills.replaceChildren();                        
+    proLink.style.display = 'none';                  
   }
-  if (content === null){
+
+  if (!content && !contact) {                        
     cptr_bg.style.display = 'none'
     skills.replaceChildren();
-
   }
-
-
-
-  caracter.style.left = `${m}px`;
-
-  const maxOffset = Math.max(0, wold.offsetWidth - Screenwidth);
-  const offset = Math.min(maxOffset, Math.max(0, m - Screenwidth / 2));
-  wold.style.transform = `translateX(${-offset}px)`;
-
-  checkNear();   
 });
 
 
@@ -153,24 +200,25 @@ window.addEventListener('keyup', (e) => {
 })
 
 
-
-
 function checkNear() {
-  const charCenter = m + caracter.offsetWidth / 2;
-  content = null;                                        
+  // const charCenter = m + caracter.offsetWidth / 2;
+  const charCenter = m + sprite.offsetWidth / 2; 
+  content = null;
   markers.forEach((marker, index) => {
     const markerCenter = marker.offsetLeft + marker.offsetWidth / 2;
     const near = Math.abs(markerCenter - charCenter) < 20;
-    
+
     if (near) {
-        content = projects[index];
-       
+      content = projects[index];
     }
 
     marker.classList.toggle('near', near);
-     carDial.style.display = content ? 'block' : 'none';  
   });
 
+  const houseCenter = contentBlock.offsetLeft + contentBlock.offsetWidth / 2;
+  contact = Math.abs(houseCenter - charCenter) < 20;
+
+  carDial.style.display = (content || contact) ? 'block' : 'none';
 }
 
 checkNear();
