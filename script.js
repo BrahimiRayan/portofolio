@@ -7,42 +7,84 @@ const winCntt = document.querySelector('.WinContent')
 const skills = document.querySelector('.skills');
 const Wintitle = document.querySelector('.title')
 const proLink = document.querySelector('#proLink');
-
+const sprite = document.querySelector('.sprite');
+const carDial = document.querySelector('.carDial') 
 
 const projects = [
   {
-    name: 'Shifa',
-    discreption: 'A health app that helps patients book appointments with doctors and keep track of their medical records.',
-    img: 'img/shifa.png',
-    link: 'https://github.com/your-username/shifa',
-    techs: ['React', 'Node.js', 'MongoDB'],
-    type: 'Web app'
+    name: 'Mega Shop',
+    discreption: 'Projet d\'équipe auquel j\'ai contribué. Une marketplace e-commerce multi-vendeurs complète : assistant de chat IA, suivi des commandes, analyses avancées et gestion des clients, des vendeurs et des administrateurs.',
+    img: 'assets/img/markers/shop.png',
+    link: 'https://github.com/lyes-mersel/megashop',
+    techs: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Prisma', 'PostgreSQL', 'NextAuth.js'],
+    type: 'Plateforme e-commerce'
   },
   {
     name: 'Bejaia Tour Guide',
-    discreption: 'An interactive guide to the city of Bejaia: landmarks, beaches, restaurants and a map with suggested routes.',
-    img: 'img/bejaia.png',
-    link: 'https://github.com/your-username/bejaia-tour-guide',
-    techs: ['JavaScript', 'Leaflet', 'CSS'],
-    type: 'Website'
+    discreption: 'Projet personnel. Un guide touristique gratuit et accessible pour aider les visiteurs à découvrir la ville de Béjaïa, avec une carte interactive.',
+    img: 'assets/img/markers/btg.png',
+    link: 'https://github.com/BrahimiRayan/Bejaia-Tour-Guide',
+    techs: ['Vue 3', 'JavaScript', 'CSS', 'Firebase', 'Leaflet'],
+    type: 'Web app'
+  },
+  {
+    name: 'Shifa',
+    discreption: 'Projet personnel. Un système de gestion hospitalière qui permet la prise de rendez-vous des patients et la gestion du personnel de l\'hôpital.',
+    img: 'assets/img/markers/shifa.png',
+    link: 'https://github.com/BrahimiRayan/Shifa',
+    techs: ['Express.js', 'EJS', 'SQL', 'CSS'],
+    type: 'Web app'
+  },
+  {
+    name: 'Azzy Store',
+    discreption: 'Projet personnel. Une application web gratuite pour les petits commerçants, en ligne ou en boutique : elle permet de suivre les statistiques de leurs produits et de déployer une petite boutique en ligne.',
+    img: 'assets/img/markers/azzy.png',
+    link: 'https://github.com/BrahimiRayan/Azzy-Store',
+    techs: ['Nuxt 3', 'TypeScript', 'Supabase', 'Drizzle ORM', 'BetterAuth', 'Chart.js'],
+    type: 'Web app'
   },
   {
     name: 'LTFM',
-    discreption: 'A management tool for a local football league: teams, fixtures, results and a live standings table.',
-    img: 'img/ltfm.png',
-    link: 'https://github.com/your-username/ltfm',
-    techs: ['Python', 'Django', 'PostgreSQL'],
-    type: 'Full-stack'
+    discreption: 'Projet personnel. Un gestionnaire de fichiers minimaliste pour Linux, écrit en C pur et sans aucune dépendance. Il permet de naviguer, créer, renommer, supprimer et rechercher des fichiers directement dans le terminal.',
+    img: 'assets/img/markers/ltfm.png',
+    link: 'https://github.com/BrahimiRayan/ltfm',
+    techs: ['C'],
+    type: 'Application terminal'
+  },
+  {
+    name: 'Nappoli Pizzas',
+    discreption: 'Projet client. Le site d\'une pizzeria. Il s\'agit de la version de mon GitHub : le site en ligne est hébergé et géré par le client.',
+    img: 'assets/img/markers/pizza.png',
+    link: 'https://github.com/BrahimiRayan/Nappoli-pizzas',
+    techs: ['Nuxt', 'Tailwind CSS', 'Supabase'],
+    type: 'Site web'
+  },
+  {
+    name: 'Madel',
+    discreption: 'Projet client. Le site de Madel, une entreprise d\'Île-de-France spécialisée dans le déménagement et le transport de meubles. Il s\'agit de la version de mon GitHub : le site en ligne est hébergé ailleurs par le client.',
+    img: 'assets/img/markers/madel.png',
+    link: 'https://github.com/BrahimiRayan/Madel',
+    techs: ['Nuxt', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+    type: 'Site web'
+  },
+  {
+    name: 'Devis Madel',
+    discreption: 'Projet client. Un logiciel indépendant créé pour l\'entreprise Madel, qui permet de générer des factures et des devis pour ses clients.',
+    img: 'assets/img/markers/devise.png',
+    link: 'https://github.com/BrahimiRayan/Devis-TrMadel',
+    techs: ['JavaScript', 'HTML', 'CSS'],
+    type: 'Logiciel'
   }
 ];
+const SPEED = 20
 
-// create the markers
 let sp = 0;
 projects.forEach((p, index) => {
   const container = document.createElement('div');
   container.id = `p${index}`;
-  container.innerText = p.name;
   container.classList.add('marker');
+  container.style.backgroundImage = `url(${p.img})`;
+
   sp += 500;
   container.style.left = `${sp}px`;
   wold.appendChild(container);
@@ -60,9 +102,13 @@ let m = 0;
 
 window.addEventListener('keydown', function (event) {
   if (event.key === 'ArrowLeft') {
-    m = Math.max(0, m - 10);
+    m = Math.max(0, m - SPEED);
+     sprite.classList.add('walking');
+    sprite.style.transform = 'scaleX(-1)';
   } else if (event.key === 'ArrowRight') {
-    m = Math.min(m + 10, wold.offsetWidth - caracter.offsetWidth);   // CHANGED: one line, same effect
+    m = Math.min(m + SPEED, wold.offsetWidth - caracter.offsetWidth);   // CHANGED: one line, same effect
+    sprite.classList.add('walking');
+    sprite.style.transform = 'scaleX(1)';
   }else if (event.key === 'Enter' && content) {
     cptr_bg.style.display = 'flex'
     //title
@@ -99,6 +145,16 @@ window.addEventListener('keydown', function (event) {
   checkNear();   
 });
 
+
+window.addEventListener('keyup', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    sprite.classList.remove('walking');
+  }
+})
+
+
+
+
 function checkNear() {
   const charCenter = m + caracter.offsetWidth / 2;
   content = null;                                        
@@ -108,10 +164,11 @@ function checkNear() {
     
     if (near) {
         content = projects[index];
+       
     }
-    marker.classList.toggle('near', near);
-    marker.innerText = near ? projects[index].name : '';
 
+    marker.classList.toggle('near', near);
+     carDial.style.display = content ? 'block' : 'none';  
   });
 
 }

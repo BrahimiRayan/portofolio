@@ -2,17 +2,18 @@
 
 * {
   font-family: "VT323", system-ui;
-  /* font-size: x-large; */
 }
 
 :root {
   --creamy: #C0C0C0;
+  --worldSize : 5500px;
 }
 
 body {
-  background: #d6d6d6;
+  background: #694023;
   padding: 0;
   margin: 0;
+
 }
 
 .bgold {
@@ -22,56 +23,160 @@ body {
   position: fixed;
   overflow: hidden;
 }
-
-.pannel {
-  background: var(--creamy);
-  border: 3px solid black;
-  width: max-content;
-  padding: .4rem;
+.instructions{
   position: fixed;
-  top: 10px;
-  left: 1%;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  color: #fbfbfb;
+  font-size: 1.3rem;
+  gap: 1rem;
+  margin-inline: .2rem;
+  z-index: 1;
 }
 
-.pannel h1 {
-  font-size: 1.5rem;
-  color: #053967;
+.carInfo{
+  display: flex;
+  margin-top: 1rem;
+}
+
+.ProjectsBanner{
+  width: 100px;
+  height: 100px;
+  /* background-color: #000; */
+  background-image: url(img/markers/projectsSign.png);
+  background-position: center;
+  background-size: cover;
+  
+  position: fixed;
+  top: 70%;
+  left: 3%;
+}
+
+.ContactsBanner{
+  width: 100px;
+  height: 100px;
+  background-image: url(img/markers/contactSign.png);
+  background-position: center;
+  background-size: cover;
+  
+  position: fixed;
+  top: 70%;
+  right: 15%;
+}
+
+.carPic {
+  width: 60px;
+  height: 60px;
+  background-color: #053967;
+  border-radius: 50%;
+  background-image: url(img/me.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.floor{
+  position: fixed;
+  background: #efebe8;
+  bottom: 0;
+  width: 100%;
+  height: 38dvh;
+  background :linear-gradient(to bottom, #8a5a36 30%, #e17019);
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.touchMove{
+  width: max-content;
+}
+
+.Mbutton{
+  margin: 1rem;
+  font-size: 1rem;
+  width: 4rem;
+  height: 4rem;
+  box-shadow: 4px 7px 0 0 black;
+  border: 3px solid black;
+}
+
+.touchMove button {
+  font-size: 2rem;
+}
+
+.pannel p{
+padding: 0;
+margin: 0;
+font-size: 1rem;
+margin-left: 1rem;
+
+}
+
+.controlsInfo{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 1rem;
 }
 
 .world {
   position: absolute;
   top: 0;
   left: 0;
-  width: 3000px;
+  width: var(--worldSize);
   height: 100%;
-  /* stripes only to SEE the movement, remove later */
-  background: repeating-linear-gradient(90deg, transparent 0 199px, rgba(241, 237, 237, 0.17) 199px 200px);
+  background: rgb(251, 80, 64);
+  background-image: url(img/bg62.jpg);
+  background-position: 0px 0px ;
+  background-repeat: repeat-x;
 }
 
 .car {
-  width: 200px;
-  height: 150px;
-  padding: 12px;
-  background: url('img/Me.png');
-  background-position: -50px 20px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  
-  transform: scale(-1, -1);
-  border: 1px solid black;
+
   position: absolute;
   bottom: 0;
   left: 10px;
-  animation: bouncing 1s infinite;
   z-index: 100;
+}
+
+.carDial{
+  background: var(--creamy);
+  padding: .5rem;
+  border: 3px solid black;
+  box-shadow: 2px 3px 0 0 black;
+    animation: bouncing 1s infinite;
+  display: none;
+}
+
+.sprite {
+  --h: 130px;                          /* the only number you change */
+
+  height: var(--h);
+  width: calc(var(--h) / 2);
+  image-rendering: pixelated;
+  background: url(img/me-walk.png) 0 20px / calc(var(--h) * 3) var(--h) no-repeat;
+  animation: walk 0.6s steps(6) infinite;
+  animation-play-state: paused;
+}
+
+.sprite.walking {
+   animation-play-state: running;
+}
+
+@keyframes walk {
+  to { background-position-x: calc(var(--h) * -3); }
 }
 
 .marker {
   position: absolute;
   bottom: 0;
-  width: 80px;
-  height: 80px;
-  background: #ffd26a;
+  width: 350px;
+  height: 220px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   color: #111;
   display: grid;
   /* place-items: center; */
@@ -85,7 +190,7 @@ body {
   }
 
   70% {
-    transform: translateY(-4px);
+    transform: translateY(-1px);
   }
 
   100% {
@@ -94,10 +199,17 @@ body {
 }
 
 .marker.near {
-  box-shadow: 0 0 20px 6px #ffd26a;
-  transform: translateY(-6px);
-}
 
+  animation: bouncing 1s infinite;
+}
+.contactHouse{
+  width: 150px;
+  height: 300px;
+  background-size: contain;
+  top: 40%;
+  right: 2%;
+  background-image: url(img/markers/contact.png);
+}
 .screen_bg {
   background: rgba(23, 22, 22, 0.27);
   position: fixed;
